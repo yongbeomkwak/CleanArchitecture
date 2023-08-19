@@ -22,14 +22,22 @@ class ViewController: UIViewController {
         
     }
 
+    lazy var tableView =  UITableView().then {
+        $0.separatorStyle = .none
+        $0.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.identifier)
         
 
+    }
+        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        print("Hello")
+        
         
         configureUI()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
     }
 
 
@@ -41,7 +49,7 @@ extension ViewController {
     private func configureUI(){
         
         view.addSubview(textField)
-        
+        view.addSubview(tableView)
         
         textField.snp.makeConstraints {
 
@@ -52,10 +60,39 @@ extension ViewController {
             
 
         }
+        
+        tableView.snp.makeConstraints{
+            
+            $0.left.right.equalToSuperview().inset(20)
+            $0.top.equalTo(textField.snp.bottom).offset(20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
 
         
     }
     
+}
+
+extension ViewController :UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+         return 100
+     }
+     
+     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         
+         let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier, for: indexPath) as! TableViewCell
+         
+         
+         
+         cell.update(str: "Hello\(indexPath.row)")
+         return cell
+     }
+}
+
+extension ViewController : UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("select \(indexPath.row)")
+    }
 }
 
 struct ViewController_PreViews: PreviewProvider {
