@@ -12,6 +12,10 @@ import SwiftUI
 
 class ViewController: UIViewController {
         
+    
+    
+
+    
     lazy var textField = UITextField().then {
         
         $0.addLeftPadding()
