@@ -9,14 +9,17 @@ import UIKit
 import Then
 import SnapKit
 import SwiftUI
+import RxSwift
 
 class ViewController: UIViewController {
         
     var viewModel = ViewModel()
     
-    lazy var input = ViewModel.Input()
+    var input = ViewModel.Input()
+    
     lazy var output = viewModel.transform(from: input)
     
+    let disposeBag = DisposeBag()
 
     
     lazy var textField = UITextField().then {
@@ -42,10 +45,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print(output)
+
         
         configureUI()
-        
-        tableView.dataSource = self
+        bind()
         tableView.delegate = self
     }
 
@@ -81,26 +85,26 @@ extension ViewController {
     }
     
     private func bind(){
-        output.dataSource.asObservable()
+        
+        textField.rx.text
+            .orEmpty
+            .bind(to: input.text)
+            .disposed(by: disposeBag)
+        
+        
+        output
+            .dataSource
+            .observe(on: MainScheduler.instance)
+            .bind(to: tableView.rx.items(cellIdentifier: TableViewCell.identifier, cellType: TableViewCell.self)) { index, item, cell in
+                cell.update(str: item.name )
+            }
+            .disposed(by: disposeBag)
+        
     }
     
 }
 
-extension ViewController :UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return 10
-     }
-     
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-         
-         let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.identifier, for: indexPath) as! TableViewCell
-         
-         
-         
-         cell.update(str: "Hello\(indexPath.row)")
-         return cell
-     }
-}
+
 
 extension ViewController : UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

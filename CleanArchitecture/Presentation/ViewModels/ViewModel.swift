@@ -24,30 +24,32 @@ class ViewModel:ViewModelType {
     public init() {
         self.fetchAllUserUseCase = FetchAllUserUseCaseImpl(repository)
         self.seachUserUseCase =  SeachUserUseCaseImpl(repository)
-        
-        self.fetchAllUserUseCase
-            .execute()
-            .asObservable()
-            .debug("HELLo")
-            .subscribe(onNext: {
-                print($0)
-            })
-            .disposed(by: disposeBag)
     }
     
     struct Input {
-        
+        var text:BehaviorRelay<String> = .init(value: "")
     }
     
     struct Output {
-        let dataSource:PublishSubject<[User]> = .init()
+        let dataSource:PublishRelay<[User]> = .init()
     }
     
     public func transform(from input:Input) -> Output {
         
         let output = Output()
         
-     
+        input.text
+            .subscribe {
+                print($0)
+            }
+            .disposed(by: disposeBag)
+        
+        self.fetchAllUserUseCase
+            .execute()
+            .asObservable()
+            .take(1)
+            .bind(to: output.dataSource)
+            .disposed(by: disposeBag)
         
      
         return output 

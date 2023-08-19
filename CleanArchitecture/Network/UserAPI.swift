@@ -19,7 +19,7 @@ extension UserAPI: Router, URLRequestConvertible {
             
         case .fetchAllUser:
             return "/user_all"
-        case .serchUser(id: let id):
+        case .serchUser:
             return "/user"
         }
     }
