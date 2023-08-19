@@ -10,7 +10,7 @@ public enum UserAPI {
 extension UserAPI: Router, URLRequestConvertible {
     // Base Url
     public var baseURL: String {
-        return "localhost:3000/user"
+        return "http://localhost:3000/user"
     }
     
     // Base Url 뒤에 붙는 path
@@ -71,6 +71,7 @@ extension UserAPI: Router, URLRequestConvertible {
     
     // request 구성하여 리턴
     public func asURLRequest() throws -> URLRequest {
+        print("BASE: \(baseURL) + \(path)")
         let url = URL(string: baseURL + path)
         var request = URLRequest(url: url!)
         

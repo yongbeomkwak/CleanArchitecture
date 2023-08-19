@@ -19,10 +19,20 @@ class ViewModel:ViewModelType {
     private let disposeBag = DisposeBag()
     private let fetchAllUserUseCase: FetchAllUserUseCase
     private let seachUserUseCase: SeachUserUseCase
+    private let repository:UserRepository = UserRepositoryImpl(UserDataSourceImpl())
     
-    public init(fetchAllUserUseCase: FetchAllUserUseCase, seachUserUseCase: SeachUserUseCase) {
-        self.fetchAllUserUseCase = fetchAllUserUseCase
-        self.seachUserUseCase = seachUserUseCase
+    public init() {
+        self.fetchAllUserUseCase = FetchAllUserUseCaseImpl(repository)
+        self.seachUserUseCase =  SeachUserUseCaseImpl(repository)
+        
+        self.fetchAllUserUseCase
+            .execute()
+            .asObservable()
+            .debug("HELLo")
+            .subscribe(onNext: {
+                print($0)
+            })
+            .disposed(by: disposeBag)
     }
     
     struct Input {
@@ -37,11 +47,7 @@ class ViewModel:ViewModelType {
         
         let output = Output()
         
-        self.fetchAllUserUseCase
-            .execute()
-            .asObservable()
-            .bind(to:output.dataSource)
-            .disposed(by: disposeBag)
+     
         
      
         return output 

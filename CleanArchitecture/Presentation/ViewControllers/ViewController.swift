@@ -12,7 +12,10 @@ import SwiftUI
 
 class ViewController: UIViewController {
         
+    var viewModel = ViewModel()
     
+    lazy var input = ViewModel.Input()
+    lazy var output = viewModel.transform(from: input)
     
 
     
@@ -75,6 +78,10 @@ extension ViewController {
         }
 
         
+    }
+    
+    private func bind(){
+        output.dataSource.asObservable()
     }
     
 }
