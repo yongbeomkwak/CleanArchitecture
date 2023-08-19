@@ -8,15 +8,17 @@
 import UIKit
 import Then
 import SnapKit
+import SwiftUI
 
 class ViewController: UIViewController {
-    
+        
     lazy var textField = UITextField().then {
         
-       
-        $0.placeholder = "Hello"
+        $0.addLeftPadding()
+        $0.attributedPlaceholder = NSAttributedString(string: "검색어를 입력하세요.",attributes:[NSAttributedString.Key.foregroundColor: UIColor.white])
+        
         $0.textColor = .white
-        $0.backgroundColor = .red
+        $0.backgroundColor = .blue.withAlphaComponent(0.8)
         $0.layer.cornerRadius = 20
         $0.clipsToBounds = true
         
@@ -75,7 +77,7 @@ extension ViewController {
 
 extension ViewController :UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         return 100
+         return 10
      }
      
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -102,25 +104,6 @@ struct ViewController_PreViews: PreviewProvider {
 }
 
 
-import SwiftUI
 
 
-#if DEBUG
-extension UIViewController {
-    private struct Preview: UIViewControllerRepresentable {
-            let viewController: UIViewController
-
-            func makeUIViewController(context: Context) -> UIViewController {
-                return viewController
-            }
-
-            func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-            }
-        }
-
-        func toPreview() -> some View {
-            Preview(viewController: self)
-        }
-}
-#endif
 

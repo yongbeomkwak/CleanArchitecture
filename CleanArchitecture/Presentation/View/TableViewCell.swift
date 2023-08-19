@@ -16,10 +16,9 @@ public class TableViewCell: UITableViewCell {
     lazy var label = UILabel().then({
         
         
-        $0.font = .systemFont(ofSize: 32)
+        $0.font = .systemFont(ofSize: 30)
         $0.textColor = .black
-        $0.backgroundColor = .red
-        
+
     })
     
     
@@ -40,7 +39,8 @@ public class TableViewCell: UITableViewCell {
         
         label.snp.makeConstraints {
 
-            $0.left.right.top.bottom.equalToSuperview().inset(20)
+            $0.left.right.centerY.equalToSuperview()
+   
             
         }
     }
