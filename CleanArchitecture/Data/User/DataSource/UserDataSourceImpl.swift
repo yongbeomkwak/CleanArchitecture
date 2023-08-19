@@ -38,7 +38,7 @@ struct UserDataSourceImpl: UserDataSource {
         
         return Single.create { single -> Disposable in
             
-            AF.request(UserAPI.fetchAllUser)
+            AF.request(UserAPI.serchUser(id: id))
                 .responseDecodable(of: UserDTO.self) { response in
                     
                     switch response.result {

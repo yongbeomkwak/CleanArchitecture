@@ -27,29 +27,42 @@ class ViewModel:ViewModelType {
     }
     
     struct Input {
-        var text:BehaviorRelay<String> = .init(value: "")
+        var text:PublishRelay<String> = .init()
     }
     
     struct Output {
-        let dataSource:PublishRelay<[User]> = .init()
+        let dataSource:BehaviorRelay<[User]> = .init(value: [])
     }
     
     public func transform(from input:Input) -> Output {
         
         let output = Output()
         
+
         input.text
-            .subscribe {
-                print($0)
+            .withUnretained(self)
+            .flatMap { (owner,id) -> Observable<[User]> in
+                
+                return self.seachUserUseCase
+                        .execute(id: id)
+                        .map({[$0]})
+                        .asObservable()
+                        
+                    
             }
-            .disposed(by: disposeBag)
-        
-        self.fetchAllUserUseCase
-            .execute()
-            .asObservable()
-            .take(1)
+            .debug("HELLO")
             .bind(to: output.dataSource)
             .disposed(by: disposeBag)
+//        
+//        self.fetchAllUserUseCase
+//            .execute()
+//            .asObservable()
+//            .take(1)
+//            .bind(to: output.dataSource)
+//            .disposed(by: disposeBag)
+        
+        
+        
         
      
         return output 

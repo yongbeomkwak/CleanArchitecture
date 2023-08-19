@@ -49,7 +49,7 @@ extension UserAPI: Router, URLRequestConvertible {
         case .fetchAllUser:
             return nil
         case .serchUser(id: let id):
-            return ["id":id]
+            return ["id":"2f206ed0-0f4b-429b-a329-bd435e62665a"]
         }
 
     }
@@ -63,7 +63,7 @@ extension UserAPI: Router, URLRequestConvertible {
             return nil
         
             
-        case .serchUser(id: _):
+        case .serchUser:
             return URLEncoding.default
             
         }
