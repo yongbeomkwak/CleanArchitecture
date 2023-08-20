@@ -17,8 +17,8 @@ struct SeachUserUseCaseImpl: SeachUserUseCase {
         self.userRepository = repository
     }
     
-    public func execute(id: String) -> Single<User> {
-        self.userRepository.serachUser(id: id)
+    public func execute(name: String) -> Single<[User]> {
+        self.userRepository.serachUser(name: name)
     }
     
 }

@@ -11,7 +11,7 @@ import RxSwift
 
 protocol UserRepository {
     
-    func serachUser(id:String) -> Single<User>
+    func serachUser(name:String) -> Single<[User]>
     
     func fetchAllUser() -> Single<[User]>
     

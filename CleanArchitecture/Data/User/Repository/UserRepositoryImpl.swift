@@ -16,8 +16,8 @@ struct UserRepositoryImpl:UserRepository {
         self.dataSource = dataSource
     }
     
-    func serachUser(id: String) -> Single<User> {
-        return dataSource.serachUser(id: id)
+    func serachUser(name: String) -> Single<[User]> {
+        return dataSource.serachUser(name: name)
     }
     
     func fetchAllUser() -> Single<[User]> {

@@ -4,7 +4,7 @@ import Foundation
 
 public enum UserAPI {
     case fetchAllUser
-    case serchUser(id:String)
+    case serchUser(name:String)
 }
 
 extension UserAPI: Router, URLRequestConvertible {
@@ -20,7 +20,7 @@ extension UserAPI: Router, URLRequestConvertible {
         case .fetchAllUser:
             return "/user_all"
         case .serchUser:
-            return "/user"
+            return ""
         }
     }
     
@@ -48,8 +48,8 @@ extension UserAPI: Router, URLRequestConvertible {
             
         case .fetchAllUser:
             return nil
-        case .serchUser(id: let id):
-            return ["id":"2f206ed0-0f4b-429b-a329-bd435e62665a"]
+        case .serchUser(name: let name):
+            return ["name":name]
         }
 
     }
@@ -71,7 +71,7 @@ extension UserAPI: Router, URLRequestConvertible {
     
     // request 구성하여 리턴
     public func asURLRequest() throws -> URLRequest {
-        print("BASE: \(baseURL) + \(path)")
+
         let url = URL(string: baseURL + path)
         var request = URLRequest(url: url!)
         
@@ -81,6 +81,7 @@ extension UserAPI: Router, URLRequestConvertible {
         if let encoding = encoding {
             return try encoding.encode(request, with: parameters)
         }
+        
         
         return request
     }

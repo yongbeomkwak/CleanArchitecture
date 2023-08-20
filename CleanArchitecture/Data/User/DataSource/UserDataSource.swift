@@ -11,5 +11,5 @@ import RxSwift
 protocol UserDataSource {
     
     func fetchAllUser() -> Single<[User]>
-    func serachUser(id:String) -> Single<User>
+    func serachUser(name:String) -> Single<[User]>
 }

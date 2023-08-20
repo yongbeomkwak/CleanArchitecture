@@ -34,16 +34,17 @@ struct UserDataSourceImpl: UserDataSource {
         
     }
     
-    func serachUser(id: String) -> Single<User> {
+    func serachUser(name: String) -> Single<[User]> {
         
         return Single.create { single -> Disposable in
             
-            AF.request(UserAPI.serchUser(id: id))
-                .responseDecodable(of: UserDTO.self) { response in
+            AF.request(UserAPI.serchUser(name: name))
+                .responseDecodable(of: [UserDTO].self) { response in
                     
+            
                     switch response.result {
                     case .success(let data):
-                        single(.success(data.toDomain()))
+                        single(.success(data.map{($0.toDomain())}))
                         
                     case .failure(let error):
                         single(.failure(error))

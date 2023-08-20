@@ -44,13 +44,10 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         print(output)
-
-        
         configureUI()
         bind()
-        tableView.delegate = self
+       
     }
 
 
@@ -100,17 +97,13 @@ extension ViewController {
             }
             .disposed(by: disposeBag)
         
+    
     }
     
 }
 
 
 
-extension ViewController : UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("select \(indexPath.row)")
-    }
-}
 
 struct ViewController_PreViews: PreviewProvider {
     static var previews: some View {

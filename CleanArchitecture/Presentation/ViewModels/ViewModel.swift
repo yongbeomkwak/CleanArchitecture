@@ -41,25 +41,36 @@ class ViewModel:ViewModelType {
 
         input.text
             .withUnretained(self)
-            .flatMap { (owner,id) -> Observable<[User]> in
+            .flatMap { (owner,name) -> Observable<[User]> in
+                if name.isEmpty {
+                    return self.fetchAllUserUseCase
+                            .execute()
+                            .asObservable()
+                            .catch { error in
+                                return Observable.empty()
+                            }
+                }
                 
-                return self.seachUserUseCase
-                        .execute(id: id)
-                        .map({[$0]})
-                        .asObservable()
-                        
+                else {
                     
+                    return self.seachUserUseCase
+                            .execute(name: name)
+                            .asObservable()
+                            .catch { error in
+                                print(error)
+                                return Observable.empty()
+                    }
+                }
+                
+                
+
+                //return Observable.empty()
             }
             .debug("HELLO")
             .bind(to: output.dataSource)
             .disposed(by: disposeBag)
-//        
-//        self.fetchAllUserUseCase
-//            .execute()
-//            .asObservable()
-//            .take(1)
-//            .bind(to: output.dataSource)
-//            .disposed(by: disposeBag)
+        
+
         
         
         

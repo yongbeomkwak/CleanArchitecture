@@ -10,6 +10,6 @@ import RxSwift
 
 protocol SeachUserUseCase {
     
-    func execute(id:String) -> Single<User>
+    func execute(name:String) -> Single<[User]>
     
 }
